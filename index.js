@@ -1,7 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 require('dotenv').config()
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId  } = require('mongodb');
 const app = express();
 const port = process.env.PORT || 5000;
 
@@ -61,6 +61,35 @@ async function run() {
       const result =await addSpotCollection.find({email:req.params.email}).toArray();
       res.send(result)
     })
+     
+    app.get("/singleProduct/:id", async(req,res) =>{
+      const result = await addSpotCollection.findOne({_id: new ObjectId(req.params.id)} )
+      console.log(req.params.id);
+      console.log(result);
+      res.send(result)
+
+    } )
+
+    app.put('/updateSpot/:id', async (req, res)=>{
+      console.log(req.params.id);
+      const query  = {_id: new ObjectId(req.params.id)};
+      const data = {
+        $set:{
+          username:req.body.username,
+          cost:req.body.cost,
+          visitors:req.body.visitors,
+          time:req.body.time,
+
+
+        }
+
+      }
+      const result = await addSpotCollection.updateOne(query, data);
+      console.log(result);
+      res.send(result)
+
+    })
+
     
 
 
