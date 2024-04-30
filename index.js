@@ -90,6 +90,12 @@ async function run() {
 
     })
 
+    app.delete('/delete/:id',async (req, res) => {
+      const result = await addSpotCollection.deleteOne({_id: new ObjectId(req.params.id) })
+      console.log(result);
+      res.send(result)
+    })
+
     
 
 
